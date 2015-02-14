@@ -1,5 +1,5 @@
 # Install
-    apt install python-virtualenv
+    apt install python-virtualenv libmysqlclient-dev
     virtualenv venv
     . venv/bin/activate
     pip install -r requirements.txt
@@ -7,7 +7,7 @@
     python manage.py runserver
 
 * You will also need a LastFM account and a API account from http://www.last.fm/api/account
-* Create a local_settings.py and set your own LASTFM\_APIKEY and LASTFM\_API\_SECRET
+* Create a local\_settings.py and set your own LASTFM\_APIKEY and LASTFM\_API\_SECRET
 
 # Usage
 * Create an admin user: python manage.py createsuperuser 
