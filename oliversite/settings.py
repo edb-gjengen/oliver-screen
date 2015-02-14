@@ -85,6 +85,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LASTFM_DEFAULT_USERNAME = 'kakdns'
 # Get these from http://www.last.fm/api/account
