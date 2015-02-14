@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
     <head>
     <title>Current track</title>
-        <link rel="stylesheet"  type="text/css" href="{{ MEDIA_URL }}screen.css" />
-        <script type="text/javascript" src="{{ MEDIA_URL }}jquery-1.6.1.min.js"></script>
-        <script type="text/javascript" src="{{ MEDIA_URL }}jquery.timers-1.2.js"></script>
-        <script type="text/javascript" src="{{ MEDIA_URL }}falling-pieces.js"></script>
+        <link rel="stylesheet"  type="text/css" href="{% static 'screen.css' %}" />
+        <script type="text/javascript" src="{% static 'jquery-1.6.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'jquery.timers-1.2.js' %}"></script>
+        <script type="text/javascript" src="{% static 'falling-pieces.js' %}"></script>
         <script type="text/javascript">
             /* Update track and now playing */
             var get_last_track = function() {
-                $( '#last_track' ).load(
-                        '{% url tracks.views.get_last_track %}');
+                $( '#last_track' ).load('{% url 'last-track' %}');
             };
             var get_now_playing = function() {
-                $( '#now_playing' ).load(
-                    '{% url tracks.views.get_now_playing %}', function() {
-                            if( is_tetris_song() ) {
-                                play_tetris();
-                            } else {
-                                dont_play_tetris();
-                            }
-                            });
+                $( '#now_playing' ).load('{% url 'now-playing' %}', function() {
+                    if( is_tetris_song() ) {
+                        play_tetris();
+                    } else {
+                        dont_play_tetris();
+                    }
+                });
             };
             /* Initial update */
             $( document ).ready( get_last_track );
@@ -31,15 +29,17 @@
             $( document ).everyTime('10s', "now_playing", get_now_playing );
 
             /* Ajax spinner */
-            $( document ).ajaxStart( function() {
-                $( '#spinner' ).show();
-                }).ajaxStop( function() {
+            $( document )
+                .ajaxStart(function() {
+                    $( '#spinner' ).show();
+                })
+                .ajaxStop( function() {
                     $( '#spinner' ).hide();
-                    });
+            });
 
             /* Loads the YouTube IFrame Player API code asynchronously. */
             var tag = document.createElement('script');
-            tag.src = "http://www.youtube.com/player_api";
+            tag.src = "https://www.youtube.com/player_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -82,7 +82,7 @@
     </head>
 
     <body>
-        <div id="spinner"><img src="{{ MEDIA_URL }}spinner.gif"/></div>
+        <div id="spinner"><img src="{% static 'spinner.gif' %}"/></div>
         <div id="container">
             <div id="content">
                 <div id="player"></div>

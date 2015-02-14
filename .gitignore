@@ -1,6 +1,7 @@
 *.pyc
 *.swp
 *.swo
-settings.py
-oliver_screen.sqlite3
+db.sqlite3
+local_settings.py
 venv
+.idea

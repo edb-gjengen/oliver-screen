@@ -1,3 +1,4 @@
+{% load staticfiles %}
 {% if now_playing %}
     {% if now_playing.video %}
         <script type="text/javascript">
@@ -27,11 +28,11 @@
             <img src="{{ now_playing.image}}" class="now_playing" /><br />
         {% endif %}
     {% endif %}
-    <img src="{{ MEDIA_URL}}spectrum-analyzer.gif" /> {{ now_playing.artist}} - {{ now_playing.title }} ♪♫<br />
+    <img src="{% static 'spectrum-analyzer.gif' %}" /> {{ now_playing.artist}} - {{ now_playing.title }} ♪♫<br />
 {% else %}
    <script type="text/javascript">
      	$("#player").delay(1000).hide();
    </script>
-    <img src="{{ MEDIA_URL}}no_music_makes_me_sick_by_sakgaa.jpg" /><br />
+    <img src="{% static 'no_music_makes_me_sick_by_sakgaa.jpg' %}" /><br />
     :[
 {% endif %}
