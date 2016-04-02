@@ -89,7 +89,7 @@ function createABrick()
     
     /* Randomly choose a brick image and assign it to the newly created element */
     /* FIXME: this url should be dynamic */
-    image.src = '/static/brick' + randomInteger(1, 5) + '.png';
+    image.src = '/static/images/brick' + randomInteger(1, 5) + '.png';
     
     brickDiv.style.top = "-150px";
 

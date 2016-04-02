@@ -1,17 +1,4 @@
-import pylast
-from django.conf import settings
-
-from oliver_screen.models import CurrentTrack, LastFMUser, YouTubeVideo
-
-
-def get_lastfmuser():
-    network = pylast.LastFMNetwork(api_key=settings.LASTFM_API_KEY, api_secret=settings.LASTFM_API_SECRET)
-    lastfmusers = LastFMUser.objects.filter(active=True)
-    if len(lastfmusers) != 1:
-        # default
-        return network.get_user(settings.LASTFM_DEFAULT_USERNAME)
-
-    return network.get_user(lastfmusers[0].name)
+from oliver_screen.models import CurrentTrack, YouTubeVideo
 
 
 def get_youtubevideo(artist, title):
@@ -27,7 +14,7 @@ def cache_current(now_playing):
     # Fetch the one CurrentTrack entry in the db and update it with the current track.
     try:
         current = CurrentTrack.objects.get(pk=1)
-    except:
+    except CurrentTrack.DoesNotExist:
         # update
         current = CurrentTrack(artist="", title="", image="", retries=0)
 
@@ -41,7 +28,7 @@ def cache_current(now_playing):
 def get_current_from_cache():
     try:
         current = CurrentTrack.objects.get(pk=1)
-    except:
+    except CurrentTrack.DoesNotExist:
         current = CurrentTrack(artist="", title="", image="", retries=0)
         current.save()
 
