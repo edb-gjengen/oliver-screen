@@ -14,3 +14,9 @@
 - Goto /admin, login, then add a LastFMUser and make it active.
 - Setup your music player (f.ex Spotify) to scrobble to that LastFM account.
 - Goto / and you should be set :=)
+
+
+# Deploy
+
+See https://blog.heroku.com/archives/2016/3/17/in_deep_with_django_channels_the_future_of_real_time_apps_in_django
+

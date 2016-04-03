@@ -17,21 +17,29 @@ function format_current_track(track) {
 
 }
 
+function update_last_track(track) {
+    $('#last_track').html(format_last_track(track));
+}
+
+function update_current_track(track) {
+    $('#now_playing').html(format_current_track(track));
+
+    if( is_tetris_song() ) {
+        play_tetris();
+    } else {
+        dont_play_tetris();
+    }
+}
+
 /* Update track and now playing */
 function get_last_track() {
     $.getJSON(urls.trackLast, function(data) {
-        $( '#last_track' ).html(format_last_track(data.track));
+        update_last_track(data.track);
     });
 }
 function get_now_playing() {
     $.getJSON(urls.trackCurrent, function(data) {
-        $( '#now_playing' ).html(format_current_track(data.track));
-
-        if( is_tetris_song() ) {
-            play_tetris();
-        } else {
-            dont_play_tetris();
-        }
+        update_current_track(data.track);
     });
 }
 
@@ -119,25 +127,48 @@ var urls = {
     trackLast: '/api/track/last/', // {% url 'track-last' %}
     trackCurrent: '/api/track/current/'  // {% url 'track-current' %}
 };
+var screen_uuid;
 
 /* Initial update */
 $( document ).ready( function() {
 
-    get_last_track();
-    get_now_playing();
+    // get_last_track();
+    // get_now_playing();
 
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var socket = new ReconnectingWebSocket(ws_scheme + '://'+ window.location.host +'/screens/');
+    socket.onmessage = function(e) {
+        console.log(e);
+        var data = JSON.parse(e.data);
+        if(data && data.track !== undefined) {
+            update_current_track(data.track);
+        } else if(data && data.screen_consumer !== undefined) {
+            console.log(data);
+            screen_uuid = data.screen_consumer.uuid;
+        }
+    };
+    socket.onopen = function() {
+        // socket.send("hello world");
+        console.log("websocket OPEN");
+    };
+    socket.onclose = function() {
+        console.log("websocket closed.");
+    };
+    socket.onerror = function(e) {
+        console.error(e);
+    };
     // createYoutubePlayer();
 });
 
 /* Start timers updating a screen resource. */
-setInterval(get_last_track, 10000);
-setInterval(get_now_playing, 10000);
+// setInterval(get_last_track, 10000);
+// setInterval(get_now_playing, 10000);
 
 /* Ajax spinner */
 $( document )
     .ajaxStart(function() {
-        $( '#spinner' ).show();
+        $('#spinner').show();
     })
     .ajaxStop( function() {
-        $( '#spinner' ).hide();
+        $('#spinner').hide();
 });

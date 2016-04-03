@@ -1,4 +1,15 @@
+import uuid
 from django.db import models
+
+
+class ScreenConsumer(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4)
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.uuid)
 
 
 class CurrentTrack(models.Model):

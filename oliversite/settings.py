@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+from huey import RedisHuey
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -27,7 +30,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
     'rest_framework',
+    'channels',
+    'huey.contrib.djhuey',
 )
 
 INSTALLED_APPS += (
@@ -75,6 +81,26 @@ LASTFM_DEFAULT_USERNAME = 'kakdns'
 # Get these from http://www.last.fm/api/account
 LASTFM_API_KEY = ''
 LASTFM_API_SECRET = ''
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "ROUTING": "oliversite.routing.channel_routing",
+    },
+}
+OLIVER_WS_GROUP = 'screens'
+OLIVER_LASTFM_POLL_INTERVAL = 10  # seconds
+
+# HUEY = {
+#     'name': 'oliverscreen',
+#     'connection': {'host': 'localhost', 'port': 6379},
+#     'consumer': {'workers': 1, 'worker_type': 'process'},
+# }
+
+HUEY = RedisHuey('oliverscreen', result_store=True)
 
 # Local settings
 try:
