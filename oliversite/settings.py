@@ -1,14 +1,12 @@
-from __future__ import unicode_literals
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-
 from huey import RedisHuey
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '#r65fsg)wsk&cs8m^i)@##7-wg=#z=*b_)a82#5z#4%&!j_9=6'
@@ -101,6 +99,13 @@ OLIVER_LASTFM_POLL_INTERVAL = 10  # seconds
 # }
 
 HUEY = RedisHuey('oliverscreen', result_store=True)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'localhost:6379',
+    }
+}
 
 # Local settings
 try:
